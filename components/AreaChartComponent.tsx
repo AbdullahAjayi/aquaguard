@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingDown, TrendingUp } from "lucide-react"
+import { TrendingDown } from "lucide-react"
 import { CartesianGrid, Area, AreaChart, XAxis } from "recharts"
 
 import {

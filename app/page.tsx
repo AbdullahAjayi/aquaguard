@@ -1,9 +1,40 @@
+"use client"
+
 import Image from "next/image"
 import { ArrowDown } from "lucide-react"
+import { useEffect } from 'react';
 
 import { AreaChartComponent, DataComponent } from "@/components/Charts"
 
 export default function Home() {
+  useEffect(() => {
+    const video = document.getElementById('fishVideo') as HTMLVideoElement;
+    const audio = document.getElementById('fishAudio') as HTMLAudioElement;
+
+    const handlePlay = () => {
+      audio.play();
+      video.muted = false; // Unmute the video when it starts playing
+    };
+
+    const handlePause = () => {
+      audio.pause();
+    };
+
+    const handleSeeked = () => {
+      audio.currentTime = video.currentTime;
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('seeked', handleSeeked);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('seeked', handleSeeked);
+    };
+  }, []);
+
   return (
     <div className="z-10 px-2 md:px-32 lg:px-10 py-4 pt-5 mx-auto max-w-[1200px] font-sans text-black">
       <div className=""></div>
@@ -28,20 +59,44 @@ export default function Home() {
       <div className="lg:grid grid-cols-12 grid-row-8 gap-4">
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-4 bg-white/40 rounded-xl p-4">
           <h1 className="font-bold opacity-70 mb-4">Live feed</h1>
-          <div className="h-full">
+          <div className="h-full relative">
             <video
               autoPlay
               loop
               controls
+              muted // Add this attribute
               className="w-full rounded-lg"
               width="320"
               height="240"
+              id="fishVideo"
             >
               <source src="/live-feed.mkv" type="video/mp4"></source>
               Your browser does not support the video tag
             </video>
+            <audio id="fishAudio" loop>
+              <source src="/fish-pond-sound.mp3" type="audio/mp3" />
+              Your browser does not support the audio element.
+            </audio>
           </div>
-          <audio src="/fish-pond-sound.mp3"></audio>
+          {/* <script dangerouslySetInnerHTML={{
+            __html: `
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const video = document.getElementById('fishVideo');
+    const audio = document.getElementById('fishAudio');
+
+    video.addEventListener('play', () => {
+      audio.play();
+    });
+
+    video.addEventListener('pause', () => {
+      audio.pause();
+    });
+
+    video.addEventListener('seeked', () => {
+      audio.currentTime = video.currentTime;
+    });
+  });
+`}} /> */}
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-5 bg-white/40 rounded-xl p-4">
           <DataComponent />
