@@ -111,7 +111,7 @@ export default function Home() {
           <DataComponent />
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-4 bg-white/40 rounded-xl p-4">
-          <AreaChartComponent />
+          {/* <AreaChartComponent /> */}
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-3 bg-white/40 rounded-xl p-4">
           <h1 className="font-bold opacity-70 mb-4">Control</h1>

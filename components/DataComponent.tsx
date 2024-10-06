@@ -65,20 +65,33 @@ export function DataComponent() {
       return;
     }
 
-    const unsubscribe = onValue(
-      sensorReadings,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          setLiveSensorData(snapshot.val());
-        } else {
-          console.log("Data not available");
-        }
-      },
-      (error) => console.log("Error listening to sensor readings:", error)
-    );
+    const fetchData = () => {
+      onValue(
+        sensorReadings,
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const newData = snapshot.val();
+            console.log("New sensor data:", newData);
+            setLiveSensorData(newData);
+          } else {
+            console.log("Data not available");
+          }
+        },
+        (error) => console.log("Error listening to sensor readings:", error)
+      );
+    };
 
-    return () => unsubscribe();
-  }, [sensorReadings]);
+    // Initial fetch
+    fetchData();
+
+    // Set up interval to fetch data every second
+    const intervalId = setInterval(fetchData, 1000);
+
+    // Clean up function
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   if (!liveSensorData) {
     return <div>Loading...</div>;
