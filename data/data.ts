@@ -1,11 +1,9 @@
-"use client"
-
 import { ref, get, onValue } from "firebase/database"
 
-import { dataBase } from "./firebase"
+import { database } from "./firebase"
 import { ChartConfig } from "@/components/ui/chart"
 
-const sensorReadings = ref(dataBase, "Sensor")
+const sensorReadings = ref(database, "Sensor")
 
 export const getSensorReadings = () =>
   get(sensorReadings)
