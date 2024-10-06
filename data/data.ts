@@ -3,29 +3,33 @@ import { ref, get, onValue } from "firebase/database"
 import { database } from "./firebase"
 import { ChartConfig } from "@/components/ui/chart"
 
-const sensorReadings = ref(database, "Sensor")
+const sensorReadings = database ? ref(database, "Sensor") : null
 
-export const getSensorReadings = () =>
-  get(sensorReadings)
+export const getSensorReadings = async () => {
+  if (!sensorReadings) {
+    console.log("Database not initialized")
+    return Promise.resolve(null)
+  }
+  return get(sensorReadings)
     .then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val()
       } else {
         console.log("data not available")
+        return null
       }
     })
     .catch((error) => {
       console.log(error)
+      return null
     })
-
-export const getUpdatedSensorReadings = () => {
-  onValue(sensorReadings, (snapshot) => {
-    const data = snapshot.val()
-    console.log(data)
-  })
 }
 
 export const listenToSensorReadings = (callback: (data: any) => void) => {
+  if (!sensorReadings) {
+    console.log("Database not initialized")
+    return () => {}
+  }
   return onValue(
     sensorReadings,
     (snapshot) => {
@@ -35,7 +39,7 @@ export const listenToSensorReadings = (callback: (data: any) => void) => {
         console.log("data not available")
       }
     },
-    (error) => console.log("Errror listening to sensor readings:", error)
+    (error) => console.log("Error listening to sensor readings:", error)
   )
 }
 
