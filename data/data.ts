@@ -1,3 +1,5 @@
+"use client"
+
 import { ref, get, onValue } from "firebase/database"
 
 import { dataBase } from "./firebase"

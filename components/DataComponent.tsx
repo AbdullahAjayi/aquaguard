@@ -28,15 +28,15 @@ const chartConfig = {
     label: "value",
   },
   "DO_value": {
-    label: "DO",
+    label: "DO_L",
     color: "red",
   },
   "Fish_tank_level": {
-    label: "TL",
+    label: "Tank_L",
     color: "#FF7EE2",
   },
   "Reservoir_level": {
-    label: "RL",
+    label: "Rsvr_L",
     color: "green",
   },
   "Temperature": {

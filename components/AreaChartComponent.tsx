@@ -18,11 +18,39 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { chartData, chartConfig } from "@/data/data"
+import { chartData, chartConfig, listenToSensorReadings } from "@/data/data"
+import { useEffect, useRef, useState } from "react"
 
 // export const description = "A multiple line chart"
 
 export function AreaChartComponent() {
+  // const [chartData, setChartData] = useState(null)
+  // const [liveSensorData, setLiveSensorData] = useState(null)
+  // const latestDataRef = useRef(null)
+
+  // useEffect(() => {
+  //   const unsubcribe = listenToSensorReadings((data) => {
+  //     if (data) {
+  //       latestDataRef.current = data
+  //     } else {
+  //       console.log("No data available")
+  //     }
+  //   })
+
+  //   const intervalId = setInterval(() => {
+  //     if (latestDataRef.current) {
+  //       console.log("New sensor readings:", latestDataRef.current)
+  //       setLiveSensorData(latestDataRef.current)
+  //     }
+  //   }, 1000)
+
+  //   return () => {
+  //     unsubcribe()
+  //     clearInterval(intervalId)
+  //   }
+  // })
+
+
   return (
     <Card className="h-full">
       <CardHeader>
