@@ -2,18 +2,35 @@
 
 import Image from "next/image"
 import { ArrowDown } from "lucide-react"
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AreaChartComponent, DataComponent } from "@/components/Charts"
+import { getSensorReadings } from "@/data/data";
 
 export default function Home() {
+
+  const [sensorData, setSensorData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getSensorReadings();
+        setSensorData(data);
+      } catch (error) {
+        console.error("Error fetching sensor readings:", error);
+      }
+    };
+
+    fetchData();
+    // ... rest of your useEffect code (video and audio handling)
+  }, []);
+
   useEffect(() => {
     const video = document.getElementById('fishVideo') as HTMLVideoElement;
     const audio = document.getElementById('fishAudio') as HTMLAudioElement;
 
     const handlePlay = () => {
-      audio.play();
-      video.muted = false; // Unmute the video when it starts playing
+      audio.play().catch(error => console.error("Audio playback failed:", error))
     };
 
     const handlePause = () => {
@@ -24,16 +41,24 @@ export default function Home() {
       audio.currentTime = video.currentTime;
     };
 
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('seeked', handleSeeked);
+    const enableAudio = () => {
+      video.addEventListener('play', handlePlay);
+      video.addEventListener('pause', handlePause);
+      video.addEventListener('seeked', handleSeeked);
+      document.removeEventListener('click', enableAudio);
+    };
+
+    document.addEventListener('click', enableAudio);
 
     return () => {
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('seeked', handleSeeked);
+      document.removeEventListener('click', enableAudio);
     };
+
   }, []);
+
 
   return (
     <div className="z-10 px-2 md:px-32 lg:px-10 py-4 pt-5 mx-auto max-w-[1200px] font-sans text-black">
@@ -78,25 +103,6 @@ export default function Home() {
               Your browser does not support the audio element.
             </audio>
           </div>
-          {/* <script dangerouslySetInnerHTML={{
-            __html: `
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const video = document.getElementById('fishVideo');
-    const audio = document.getElementById('fishAudio');
-
-    video.addEventListener('play', () => {
-      audio.play();
-    });
-
-    video.addEventListener('pause', () => {
-      audio.pause();
-    });
-
-    video.addEventListener('seeked', () => {
-      audio.currentTime = video.currentTime;
-    });
-  });
-`}} /> */}
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-5 bg-white/40 rounded-xl p-4">
           <DataComponent />

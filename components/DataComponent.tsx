@@ -17,45 +17,98 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
+import { getSensorReadings, listenToSensorReadings } from "@/data/data"
+import { useEffect, useRef, useState } from "react"
 // import { chartData, chartConfig } from "@/data/data"
 
 export const description = "A mixed bar chart"
 
-const chartData = [
-  { parameter: "temperature", value: 31, fill: "var(--color-temperature)" },
-  { parameter: "humidity", value: 75, fill: "var(--color-humidity)" },
-  { parameter: "dissolved_oxygen", value: 8.8, fill: "var(--color-dissolved_oxygen)" },
-  { parameter: "H2O_level", value: 92, fill: "var(--color-H2O_level)" },
-  { parameter: "pH_level", value: 7.5, fill: "var(--color-pH_level)" },
-]
-
 const chartConfig = {
   value: {
-    label: "Value",
+    label: "value",
   },
-  temperature: {
-    label: "Temp",
+  "DO_value": {
+    label: "DO",
     color: "red",
   },
-  humidity: {
-    label: "Humid",
+  "Fish_tank_level": {
+    label: "TL",
     color: "#FF7EE2",
   },
-  dissolved_oxygen: {
-    label: "Oxygen",
+  "Reservoir_level": {
+    label: "RL",
     color: "green",
   },
-  H2O_level: {
-    label: "H2O",
+  "Temperature": {
+    label: "Temp",
     color: "blue",
   },
-  pH_level: {
-    label: "PH",
+  "Turbidity": {
+    label: "Turb",
+    color: "lightgreen",
+  },
+  "pH_value": {
+    label: "pH",
     color: "#FFB200",
   },
 } satisfies ChartConfig
 
 export function DataComponent() {
+  const [sensorData, setSensorData] = useState(null);
+  const [liveSensorData, setLiveSensorData] = useState(null)
+  const latestDataRef = useRef(null)
+
+
+  useEffect(() => {
+    const unsubcribe = listenToSensorReadings((data) => {
+      if (data) {
+        latestDataRef.current = data
+      } else {
+        console.log("No data available")
+      }
+    })
+
+    const intervalId = setInterval(() => {
+      if (latestDataRef.current) {
+        console.log("New sensor readings:", latestDataRef.current)
+        setLiveSensorData(latestDataRef.current)
+      }
+    }, 1000)
+
+    return () => {
+      unsubcribe()
+      clearInterval(intervalId)
+    }
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getSensorReadings();
+        setSensorData(data);
+      } catch (error) {
+        console.error("Error fetching sensor readings:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
+  if (!liveSensorData) {
+    return <div>Loading...</div>;
+  }
+
+  const chartData = [
+    { parameter: "DO_value", value: liveSensorData["DO_value"], fill: "var(--color-DO_value)" },
+    { parameter: "Fish_tank_level", value: liveSensorData["Fish_tank_level"], fill: "var(--color-Fish_tank_level)" },
+    { parameter: "Reservoir_level", value: liveSensorData["Reservoir_level"], fill: "var(--color-Reservoir_level)" },
+    { parameter: "Temperature", value: liveSensorData["Temperature"], fill: "var(--color-Temperature)" },
+    { parameter: "Turbidity", value: liveSensorData["Turbidity"], fill: "var(--color-Turbidity)" },
+    { parameter: "pH_value", value: liveSensorData["pH_value"], fill: "var(--color-pH_value)" },
+  ]
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -101,7 +154,7 @@ export function DataComponent() {
           {/* Temperature reduced by 1 today <TrendingUp className="h-4 w-4" /> */}
         </div>
         <div className="leading-none text-muted-foreground font-bold">
-          Showing results for 20th of October 2024
+          Showing results for 1st of October
         </div>
       </CardFooter>
     </Card>

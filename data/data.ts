@@ -1,4 +1,43 @@
+import { ref, get, onValue } from "firebase/database"
+
+import { dataBase } from "./firebase"
 import { ChartConfig } from "@/components/ui/chart"
+
+const sensorReadings = ref(dataBase, "Sensor")
+
+export const getSensorReadings = () =>
+  get(sensorReadings)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val()
+      } else {
+        console.log("data not available")
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
+export const getUpdatedSensorReadings = () => {
+  onValue(sensorReadings, (snapshot) => {
+    const data = snapshot.val()
+    console.log(data)
+  })
+}
+
+export const listenToSensorReadings = (callback: (data: any) => void) => {
+  return onValue(
+    sensorReadings,
+    (snapshot) => {
+      if (snapshot.exists()) {
+        callback(snapshot.val())
+      } else {
+        console.log("data not available")
+      }
+    },
+    (error) => console.log("Errror listening to sensor readings:", error)
+  )
+}
 
 export const chartData = [
   {
