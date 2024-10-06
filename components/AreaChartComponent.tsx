@@ -18,12 +18,43 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { chartData, chartConfig, listenToSensorReadings } from "@/data/data"
-import { useEffect, useRef, useState } from "react"
+import { chartData, chartConfig } from "@/data/data"
+import { useEffect, useState } from "react"
+
+import { ref, onValue } from "firebase/database"
+
+import { database } from "@/data/firebase"
 
 // export const description = "A multiple line chart"
+const sensorReadings = database ? ref(database, "Sensor") : null
 
 export function AreaChartComponent() {
+  const [chartData, setChartData] = useState([])
+
+  useEffect(() => {
+    if (!sensorReadings) {
+      console.log("Database not initialized")
+      return
+    }
+
+    const unsubscribe = onValue(
+      sensorReadings,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val()
+          // Process the data and update the chart
+          const newChartData = processFirebaseData(data)
+          setChartData(newChartData as React.SetStateAction<never[]>)
+        } else {
+          console.log("Data not available")
+        }
+      },
+      (error) => console.log("Error listening to sensor readings:", error)
+    )
+
+    return () => unsubscribe()
+  }, [])
+
   // const [chartData, setChartData] = useState(null)
   // const [liveSensorData, setLiveSensorData] = useState(null)
   // const latestDataRef = useRef(null)
@@ -177,4 +208,14 @@ export function AreaChartComponent() {
       </CardFooter>
     </Card>
   )
+}
+
+// Helper function to process Firebase data
+function processFirebaseData(data: any) {
+  // Transform the Firebase data into the format expected by the chart
+  // This is a placeholder implementation; adjust according to your data structure
+  return Object.entries(data).map(([key, value]) => ({
+    day: key,
+    ...(typeof value === 'object' ? value : {}),
+  }))
 }

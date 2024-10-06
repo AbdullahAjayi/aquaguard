@@ -17,9 +17,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-import { getSensorReadings, listenToSensorReadings } from "@/data/data"
 import { useEffect, useRef, useState } from "react"
-// import { chartData, chartConfig } from "@/data/data"
+import { ref, onValue } from "firebase/database"
+
+import { database } from "@/data/firebase"
 
 export const description = "A mixed bar chart"
 
@@ -53,48 +54,31 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+const sensorReadings = database ? ref(database, "Sensor") : null
+
 export function DataComponent() {
-  const [sensorData, setSensorData] = useState(null);
-  const [liveSensorData, setLiveSensorData] = useState(null)
-  const latestDataRef = useRef(null)
-
+  const [liveSensorData, setLiveSensorData] = useState(null);
 
   useEffect(() => {
-    const unsubcribe = listenToSensorReadings((data) => {
-      if (data) {
-        latestDataRef.current = data
-      } else {
-        console.log("No data available")
-      }
-    })
-
-    const intervalId = setInterval(() => {
-      if (latestDataRef.current) {
-        console.log("New sensor readings:", latestDataRef.current)
-        setLiveSensorData(latestDataRef.current)
-      }
-    }, 1000)
-
-    return () => {
-      unsubcribe()
-      clearInterval(intervalId)
+    if (!sensorReadings) {
+      console.log("Database not initialized");
+      return;
     }
-  })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getSensorReadings();
-        setSensorData(data);
-      } catch (error) {
-        console.error("Error fetching sensor readings:", error);
-      }
-    };
+    const unsubscribe = onValue(
+      sensorReadings,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setLiveSensorData(snapshot.val());
+        } else {
+          console.log("Data not available");
+        }
+      },
+      (error) => console.log("Error listening to sensor readings:", error)
+    );
 
-    fetchData();
-  }, []);
-
-
+    return () => unsubscribe();
+  }, [sensorReadings]);
 
   if (!liveSensorData) {
     return <div>Loading...</div>;

@@ -3,7 +3,7 @@ import { ref, get, onValue } from "firebase/database"
 import { database } from "./firebase"
 import { ChartConfig } from "@/components/ui/chart"
 
-const sensorReadings = database ? ref(database, "Sensor") : null
+export const sensorReadings = database ? ref(database, "Sensor") : null
 
 export const getSensorReadings = async () => {
   if (!sensorReadings) {
