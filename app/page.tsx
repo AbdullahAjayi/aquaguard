@@ -3,9 +3,12 @@
 import Image from "next/image"
 import { ArrowDown } from "lucide-react"
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic'
 
-import { AreaChartComponent, DataComponent } from "@/components/Charts"
 import { getSensorReadings } from "@/data/data";
+
+const AreaChartComponent = dynamic(() => import('@/components/Charts').then(mod => mod.AreaChartComponent), { ssr: false })
+const DataComponent = dynamic(() => import('@/components/Charts').then(mod => mod.DataComponent), { ssr: false })
 
 export default function Home() {
 
