@@ -104,7 +104,7 @@ export default function Home() {
             </div>
             <div className="flex gap-3 items-center">
               <input className="bg-[#FF7EE2]" type="range" name="temperature" id="" />{" "}
-              <label htmlFor="temperature">Humidity</label>
+              <label htmlFor="temperature">Turbidity</label>
             </div>
             <div className="flex gap-3 items-center">
               <input className="bg-green" type="range" name="temperature" id="" />{" "}
