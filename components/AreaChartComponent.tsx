@@ -75,7 +75,7 @@ export function AreaChartComponent() {
       <CardHeader>
         <CardTitle className="font-bold opacity-70">Readings</CardTitle>
         <CardDescription className="font-bold opacity-70">
-          Showing reading of pond variables for the past 11 days
+          Showing the past 11 pond variables readings
         </CardDescription>
       </CardHeader>
       <CardContent>
