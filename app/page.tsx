@@ -5,28 +5,10 @@ import { ArrowDown } from "lucide-react"
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic'
 
-import { getSensorReadings } from "@/data/data";
-
 const AreaChartComponent = dynamic(() => import('@/components/Charts').then(mod => mod.AreaChartComponent), { ssr: false })
 const DataComponent = dynamic(() => import('@/components/Charts').then(mod => mod.DataComponent), { ssr: false })
 
 export default function Home() {
-
-  const [sensorData, setSensorData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getSensorReadings();
-        setSensorData(data);
-      } catch (error) {
-        console.error("Error fetching sensor readings:", error);
-      }
-    };
-
-    fetchData();
-    // ... rest of your useEffect code (video and audio handling)
-  }, []);
 
   useEffect(() => {
     const video = document.getElementById('fishVideo') as HTMLVideoElement;
@@ -111,11 +93,11 @@ export default function Home() {
           <DataComponent />
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-4 bg-white/40 rounded-xl p-4">
-          {/* <AreaChartComponent /> */}
+          <AreaChartComponent />
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-3 bg-white/40 rounded-xl p-4">
           <h1 className="font-bold opacity-70 mb-4">Control</h1>
-          <div className="h-[300px] flex flex-col gap-3 font-bold text-black/70">
+          <div className="h-[300px] flex flex-col gap-3 font-bold text-black/70 bg-white/80 rounded-lg p-6">
             <div className="flex gap-3 items-center">
               <input className="bg-red-300" type="range" name="temperature" id="" />{" "}
               <label htmlFor="temperature">Temperature</label>

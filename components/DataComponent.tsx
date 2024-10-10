@@ -19,6 +19,7 @@ import {
 
 import { useEffect, useRef, useState } from "react"
 import { ref, onValue } from "firebase/database"
+// import { chartConfig } from "@/data/data"
 
 import { database } from "@/data/firebase"
 
@@ -71,7 +72,6 @@ export function DataComponent() {
         (snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val();
-            console.log("New sensor data:", newData);
             setLiveSensorData(newData);
           } else {
             console.log("Data not available");
@@ -151,7 +151,7 @@ export function DataComponent() {
           {/* Temperature reduced by 1 today <TrendingUp className="h-4 w-4" /> */}
         </div>
         <div className="leading-none text-muted-foreground font-bold">
-          Showing results for 1st of October
+          Showing results for 7th of October
         </div>
       </CardFooter>
     </Card>

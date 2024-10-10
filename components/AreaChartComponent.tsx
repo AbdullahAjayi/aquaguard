@@ -12,13 +12,15 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
+  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { chartData, chartConfig } from "@/data/data"
+import { chartConfig } from "@/data/data"
+import { useSensorReadings } from "@/hooks/useSensorReadings"
 import { useEffect, useState } from "react"
 
 import { ref, onValue } from "firebase/database"
@@ -28,59 +30,45 @@ import { database } from "@/data/firebase"
 // export const description = "A multiple line chart"
 const sensorReadings = database ? ref(database, "Sensor") : null
 
+
 export function AreaChartComponent() {
-  const [chartData, setChartData] = useState([])
-
-  useEffect(() => {
-    if (!sensorReadings) {
-      console.log("Database not initialized")
-      return
-    }
-
-    const unsubscribe = onValue(
-      sensorReadings,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val()
-          // Process the data and update the chart
-          const newChartData = processFirebaseData(data)
-          setChartData(newChartData as React.SetStateAction<never[]>)
-        } else {
-          console.log("Data not available")
-        }
-      },
-      (error) => console.log("Error listening to sensor readings:", error)
-    )
-
-    return () => unsubscribe()
-  }, [])
-
-  // const [chartData, setChartData] = useState(null)
-  // const [liveSensorData, setLiveSensorData] = useState(null)
-  // const latestDataRef = useRef(null)
+  const readings = useSensorReadings()
+  const [chartData, setChartData] = useState<any[]>([]);
 
   // useEffect(() => {
-  //   const unsubcribe = listenToSensorReadings((data) => {
-  //     if (data) {
-  //       latestDataRef.current = data
-  //     } else {
-  //       console.log("No data available")
-  //     }
-  //   })
-
-  //   const intervalId = setInterval(() => {
-  //     if (latestDataRef.current) {
-  //       console.log("New sensor readings:", latestDataRef.current)
-  //       setLiveSensorData(latestDataRef.current)
-  //     }
-  //   }, 1000)
-
-  //   return () => {
-  //     unsubcribe()
-  //     clearInterval(intervalId)
+  //   if (!sensorReadings) {
+  //     console.warn("sensorReadings is null. Firebase database might not be initialized.");
+  //     return;
   //   }
-  // })
 
+  //   console.log("Setting up Firebase listener...");
+  //   const unsubscribe = onValue(sensorReadings, async (snapshot) => {
+  //     console.clear()
+  //     try {
+  //       console.log("Firebase data updated. Fetching formatted data...");
+  //       const formattedData = await getFormattedData();
+
+  //       if (Array.isArray(formattedData) && formattedData.length > 0) {
+  //         setChartData(formattedData as []);
+  //         console.log("Chart data updated:", formattedData);
+  //       } else {
+  //         console.warn("Formatted data is empty or not an array:", formattedData);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   });
+
+  //   // Clean up the listener on component unmount
+  //   return () => {
+  //     console.log("Cleaning up Firebase listener...");
+  //     unsubscribe();
+  //   };
+  // }, []);
+
+  setInterval(() => {
+    setChartData(readings)
+  }, 1000 * 5)
 
   return (
     <Card className="h-full">
@@ -110,81 +98,77 @@ export function AreaChartComponent() {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
+              <linearGradient id="fillDO" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-DO)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-DO)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillFishTank" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-Fish_tank_level)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-Fish_tank_level)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillReservoir" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-Reservoir_level)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-Reservoir_level)" stopOpacity={0.1} />
+              </linearGradient>
               <linearGradient id="fillTemperature" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-temperature)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-temperature)"
-                  stopOpacity={0.1}
-                />
+                <stop offset="5%" stopColor="var(--color-Temperature)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-Temperature)" stopOpacity={0.1} />
               </linearGradient>
-              <linearGradient id="fillHumidity" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-humidity)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-humidity)" stopOpacity={0.1} />
+              <linearGradient id="fillTurbidity" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-Turbidity)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-Turbidity)" stopOpacity={0.1} />
               </linearGradient>
-              <linearGradient id="fillDissolvedOxygen" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-dissolved_oxygen)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-dissolved_oxygen)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillH2OLevel" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-H2O_level)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-H2O_level)" stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id="fillPHLevel" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-pH_level)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-pH_level)" stopOpacity={0.1} />
+              <linearGradient id="fillPH" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-pH_value)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-pH_value)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <Area
-              dataKey="humidity"
+              dataKey="DO_value"
               type="natural"
-              fill="url(#fillHumidity)"
+              fill="url(#fillDO)"
               fillOpacity={0.4}
-              stroke="var(--color-humidity)"
+              stroke="var(--color-DO_value)"
               stackId="a"
             />
             <Area
-              dataKey="temperature"
+              dataKey="Fish_tank_level"
+              type="natural"
+              fill="url(#fillFishTank)"
+              fillOpacity={0.4}
+              stroke="var(--color-Fish_tank_level)"
+              stackId="a"
+            />
+            <Area
+              dataKey="Reservoir_level"
+              type="natural"
+              fill="url(#fillReservoir)"
+              fillOpacity={0.4}
+              stroke="var(--color-Reservoir_level)"
+              stackId="a"
+            />
+            <Area
+              dataKey="Temperature"
               type="natural"
               fill="url(#fillTemperature)"
               fillOpacity={0.4}
-              stroke="var(--color-temperature)"
+              stroke="var(--color-Temperature)"
               stackId="a"
             />
             <Area
-              dataKey="dissolved_oxygen"
+              dataKey="Turbidity"
               type="natural"
-              fill="url(#fillDissolvedOxygen)"
+              fill="url(#fillTurbidity)"
               fillOpacity={0.4}
-              stroke="var(--color-dissolved_oxygen)"
+              stroke="var(--color-Turbidity)"
               stackId="a"
             />
             <Area
-              dataKey="H2O_level"
+              dataKey="pH_value"
               type="natural"
-              fill="url(#fillH2OLevel)"
+              fill="url(#fillPH)"
               fillOpacity={0.4}
-              stroke="var(--color-H2O_level)"
-              stackId="a"
-            />
-            <Area
-              dataKey="pH_level"
-              type="natural"
-              fill="url(#fillPHLevel)"
-              fillOpacity={0.4}
-              stroke="var(--color-pH_level)"
+              stroke="var(--color-pH_value)"
               stackId="a"
             />
             <ChartLegend
@@ -208,14 +192,4 @@ export function AreaChartComponent() {
       </CardFooter>
     </Card>
   )
-}
-
-// Helper function to process Firebase data
-function processFirebaseData(data: any) {
-  // Transform the Firebase data into the format expected by the chart
-  // This is a placeholder implementation; adjust according to your data structure
-  return Object.entries(data).map(([key, value]) => ({
-    day: key,
-    ...(typeof value === 'object' ? value : {}),
-  }))
 }
