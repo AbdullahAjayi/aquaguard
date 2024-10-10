@@ -151,7 +151,7 @@ export function DataComponent() {
           {/* Temperature reduced by 1 today <TrendingUp className="h-4 w-4" /> */}
         </div>
         <div className="leading-none text-muted-foreground font-bold">
-          Showing results for 7th of October
+          {`Showing readings for ${new Date().toLocaleTimeString()}`}
         </div>
       </CardFooter>
     </Card>

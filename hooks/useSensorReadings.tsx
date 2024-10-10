@@ -1,7 +1,7 @@
 import { ref, onValue } from "firebase/database"
 
 import { database } from "@/data/firebase"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { chartData } from "@/data/data"
 
 export const useSensorReadings = () => {

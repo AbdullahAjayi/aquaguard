@@ -181,11 +181,11 @@ export function AreaChartComponent() {
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
+            {/* <div className="flex items-center gap-2 font-medium leading-none">
               Temperature reduced by 1 today <TrendingDown className="h-4 w-4" />
-            </div>
+            </div> */}
             <div className="flex items-center gap-2 leading-none text-muted-foreground font-bold opacity-70">
-              October 10 - October 21
+              {`Showing readings for ${new Date().toLocaleString()}`}
             </div>
           </div>
         </div>
