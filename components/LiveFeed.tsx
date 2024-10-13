@@ -52,7 +52,7 @@ const LiveFeed = () => {
 
     return (
         <>
-            <h1 className="font-bold opacity-70 mb-4">Live feed</h1>
+            <h1 className="font-bold text-2xl mb-4">Live feed</h1>
             <div className="h-full relative">
                 <video
                     autoPlay

@@ -1,7 +1,7 @@
 const ControlPanel = () => {
     return (
         <>
-            <h1 className="font-bold opacity-70 mb-4">Control</h1>
+            <h1 className="font-bold text-2xl mb-4">Control</h1>
             <div className="h-[300px] flex flex-col gap-3 font-bold text-black/70 bg-white/80 rounded-lg p-6">
                 {[
                     { label: "Temperature", bg: "bg-red-300" },

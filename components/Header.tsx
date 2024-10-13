@@ -4,7 +4,7 @@ import { ArrowDown } from "lucide-react"
 const Header = () => {
     return (
         <div className="mb-4 py-2 px-4 bg-white/40 rounded-xl flex items-center">
-            <div className="flex justify-center gap-4 items-center w-fit">
+            <div className="flex justify-center gap-4 items-center w-fit cursor-pointer">
                 <Image
                     src="/aquaguardLogo.svg"
                     width={1}
@@ -13,9 +13,9 @@ const Header = () => {
                     alt="logo"
                     priority
                 />
-                <p className="opacity-70 font-bold">AquaGuard</p>
+                <p className="font-bold text-xl">AquaGuard</p>
             </div>
-            <div className="ml-auto flex items-center justify-between gap-4 font-bold opacity-70 cursor-pointer hover:bg-green p-3 rounded-lg transition">
+            <div className="ml-auto flex items-center justify-between gap-4 font-bold cursor-pointer hover:bg-green p-3 rounded-lg transition">
                 <ArrowDown />
                 <p>Download data</p>
             </div>
