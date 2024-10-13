@@ -154,7 +154,7 @@ export function AreaChartComponent() {
               Temperature reduced by 1 today <TrendingDown className="h-4 w-4" />
             </div> */}
             <div className="flex items-center gap-2 leading-none text-muted-foreground font-bold">
-              {`Showing readings for ${new Date().toLocaleString()}`}
+              {`Showing readings for ${new Date().toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric' })}`}
             </div>
           </div>
         </div>
