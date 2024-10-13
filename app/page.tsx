@@ -75,7 +75,7 @@ export default function Home() {
               autoPlay
               loop
               controls
-              muted // Add this attribute
+              muted
               className="w-full rounded-lg"
               width="320"
               height="240"
