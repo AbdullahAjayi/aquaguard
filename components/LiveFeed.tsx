@@ -21,19 +21,29 @@ const LiveFeed = () => {
         };
 
         const enableAudio = () => {
+            if (video.muted) return;
             video.addEventListener('play', handlePlay);
             video.addEventListener('pause', handlePause);
             video.addEventListener('seeked', handleSeeked);
-            document.removeEventListener('click', enableAudio);
         };
 
         document.addEventListener('click', enableAudio);
+        const handleMute = () => {
+            if (video.muted) {
+                audio.pause();
+            } else {
+                audio.play().catch(error => console.error("Audio playback failed:", error));
+            }
+        };
+
+        video.addEventListener('volumechange', handleMute);
 
         return () => {
             video.removeEventListener('play', handlePlay);
             video.removeEventListener('pause', handlePause);
             video.removeEventListener('seeked', handleSeeked);
             document.removeEventListener('click', enableAudio);
+            video.removeEventListener('volumechange', handleMute);
         };
 
     }, []);
