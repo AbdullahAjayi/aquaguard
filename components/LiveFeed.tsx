@@ -28,11 +28,13 @@ const LiveFeed = () => {
         };
 
         document.addEventListener('click', enableAudio);
+
         const handleMute = () => {
             if (video.muted) {
                 audio.pause();
             } else {
                 audio.play().catch(error => console.error("Audio playback failed:", error));
+                audio.volume = video.volume
             }
         };
 
