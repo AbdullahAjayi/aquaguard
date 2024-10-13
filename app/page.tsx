@@ -11,21 +11,21 @@ export default function Home() {
 
   return (
     <div className="z-10 px-2 md:px-32 lg:px-10 py-4 pt-5 mx-auto max-w-[1200px] font-sans text-black">
-      <Header />
-      <div className="lg:grid grid-cols-12 grid-row-8 gap-4">
+      <Header /> {/* Header component for the application */}
+      <main className="lg:grid grid-cols-12 grid-row-8 gap-4"> {/* Main content area with a grid layout */}
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-4 bg-white/40 rounded-xl p-4">
-          <LiveFeed />
+          <LiveFeed /> {/* Live feed component for real-time video */}
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-5 bg-white/40 rounded-xl p-4">
-          <DataComponent />
+          <DataComponent /> {/* Data component for displaying sensor readings */}
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-4 bg-white/40 rounded-xl p-4">
-          <AreaChartComponent />
+          <AreaChartComponent /> {/* Area chart component for visualizing data */}
         </div>
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-3 bg-white/40 rounded-xl p-4">
-          <ControlPanel />
+          <ControlPanel /> {/* Control panel component for user interactions */}
         </div>
-      </div>
+      </main>
     </div>
   )
 }
