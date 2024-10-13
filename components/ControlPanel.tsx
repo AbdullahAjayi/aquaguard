@@ -1,8 +1,4 @@
-import React from 'react'
-
-type Props = {}
-
-const ControlPanel = (props: Props) => {
+const ControlPanel = () => {
     return (
         <>
             <h1 className="font-bold opacity-70 mb-4">Control</h1>
