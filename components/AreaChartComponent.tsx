@@ -33,25 +33,25 @@ const sensorReadings = database ? ref(database, "Sensor") : null
 
 export function AreaChartComponent() {
   const readings = useSensorReadings()
-  const [chartData, setChartData] = useState<any[]>([]);
+  // const [chartData, setChartData] = useState<any[]>([]);
 
-  setInterval(() => {
-    setChartData(readings)
-  }, 1000 * 5)
+  // setInterval(() => {
+  //   setChartData(readings)
+  // }, 1000 * 5)
 
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-bold opacity-70">Readings</CardTitle>
-        <CardDescription className="font-bold opacity-70">
-          Showing the past 11 pond variables readings
+        <CardTitle className="font-bold">Readings</CardTitle>
+        <CardDescription className="font-bold">
+          Displaying dummy data as the pond is currently inactive
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={readings}
             margin={{
               left: 12,
               right: 12,
@@ -153,7 +153,7 @@ export function AreaChartComponent() {
             {/* <div className="flex items-center gap-2 font-medium leading-none">
               Temperature reduced by 1 today <TrendingDown className="h-4 w-4" />
             </div> */}
-            <div className="flex items-center gap-2 leading-none text-muted-foreground font-bold opacity-70">
+            <div className="flex items-center gap-2 leading-none text-muted-foreground font-bold">
               {`Showing readings for ${new Date().toLocaleString()}`}
             </div>
           </div>

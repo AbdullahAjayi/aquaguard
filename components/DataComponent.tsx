@@ -109,8 +109,10 @@ export function DataComponent() {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="font-bold opacity-70">Live Pond Stats:</CardTitle>
-        <CardDescription className="font-bold opacity-70"></CardDescription>
+        <CardTitle className="font-bold">Live Pond Stats:</CardTitle>
+        <CardDescription className="font-bold">
+          Displaying the last recorded data as the pond is currently inactive
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
