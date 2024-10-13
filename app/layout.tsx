@@ -12,7 +12,7 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   title: "Aquaguard",
-  description: "AquaGuard: Real-time monitoring and control system for water quality and aquatic life.",
+  description: "A real-time monitoring and control system for water quality and aquatic life.",
 }
 
 export default function RootLayout({
