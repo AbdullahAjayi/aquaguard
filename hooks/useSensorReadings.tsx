@@ -36,7 +36,7 @@ export const useSensorReadings = () => {
         return () => unsubscribe()
     }, [sensorReadingsRef])
 
-    if (readingsRef.current.length == 0)
-        return chartData
-    else { return readingsRef.current }
+    // if (readingsRef.current.length == 0)
+    return chartData
+    // else { return readingsRef.current }
 }
