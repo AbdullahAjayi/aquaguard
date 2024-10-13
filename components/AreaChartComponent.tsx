@@ -35,37 +35,6 @@ export function AreaChartComponent() {
   const readings = useSensorReadings()
   const [chartData, setChartData] = useState<any[]>([]);
 
-  // useEffect(() => {
-  //   if (!sensorReadings) {
-  //     console.warn("sensorReadings is null. Firebase database might not be initialized.");
-  //     return;
-  //   }
-
-  //   console.log("Setting up Firebase listener...");
-  //   const unsubscribe = onValue(sensorReadings, async (snapshot) => {
-  //     console.clear()
-  //     try {
-  //       console.log("Firebase data updated. Fetching formatted data...");
-  //       const formattedData = await getFormattedData();
-
-  //       if (Array.isArray(formattedData) && formattedData.length > 0) {
-  //         setChartData(formattedData as []);
-  //         console.log("Chart data updated:", formattedData);
-  //       } else {
-  //         console.warn("Formatted data is empty or not an array:", formattedData);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   });
-
-  //   // Clean up the listener on component unmount
-  //   return () => {
-  //     console.log("Cleaning up Firebase listener...");
-  //     unsubscribe();
-  //   };
-  // }, []);
-
   setInterval(() => {
     setChartData(readings)
   }, 1000 * 5)
