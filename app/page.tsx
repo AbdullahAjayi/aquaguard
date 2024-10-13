@@ -5,6 +5,7 @@ import { ArrowDown } from "lucide-react"
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic'
 import ControlPanel from "@/components/ControlPanel";
+import Header from "@/components/Header";
 
 const AreaChartComponent = dynamic(() => import('@/components/Charts').then(mod => mod.AreaChartComponent), { ssr: false })
 const DataComponent = dynamic(() => import('@/components/Charts').then(mod => mod.DataComponent), { ssr: false })
@@ -48,25 +49,7 @@ export default function Home() {
 
   return (
     <div className="z-10 px-2 md:px-32 lg:px-10 py-4 pt-5 mx-auto max-w-[1200px] font-sans text-black">
-      <div className=""></div>
-      {/* Header */}
-      <div className="mb-4 py-2 px-4 bg-white/40 rounded-xl flex items-center">
-        <div className="flex justify-center gap-4 items-center w-fit">
-          <Image
-            src="/aquaguardLogo.svg"
-            width={1}
-            height={1}
-            className="h-[40px] w-auto"
-            alt="logo"
-            priority
-          />
-          <p className="opacity-70 font-bold">AquaGuard</p>
-        </div>
-        <div className="ml-auto flex items-center justify-between gap-4 font-bold opacity-70 cursor-pointer hover:bg-green p-3 rounded-lg transition">
-          <ArrowDown />
-          <p>Download data</p>
-        </div>
-      </div>
+      <Header />
       <div className="lg:grid grid-cols-12 grid-row-8 gap-4">
         <div className="mb-4 lg:mb-0 lg:h-auto col-span-6 row-span-4 bg-white/40 rounded-xl p-4">
           <h1 className="font-bold opacity-70 mb-4">Live feed</h1>
