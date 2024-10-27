@@ -11,7 +11,7 @@ A web interface for a smart pond system aimed at monitoring and controlling vari
 
 - Real-time monitoring of pond variables 🌡️
 - User-friendly dashboard for data visualization 📊
-- Ability of user to control pond variables from the web interface (yet to be included feature) ⚙️
+- Ability of user/ai model to control pond variables from the web interface (yet to be included feature) ⚙️
 - Live feed of fishes in the pond displayed on the web interface. 🎥🐠
 
 ## Technologies Used 🛠️
