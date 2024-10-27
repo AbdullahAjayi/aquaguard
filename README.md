@@ -4,6 +4,9 @@ A web interface for a smart pond system aimed at monitoring and controlling vari
 
 ![Aquaguard ui](https://media.licdn.com/dms/image/v2/D4D22AQED2TIfr6vQtA/feedshare-shrink_1280/feedshare-shrink_1280/0/1728744063932?e=1732752000&v=beta&t=1ne3vPo3NcVhiFHYpmrYnovbvwM0i_fy9qvA70qW85Q)
 
+## Live Site 🔗
+[https://aquaguard.vercel.app/](https://aquaguard.vercel.app/)
+
 ## Features ✨
 
 - Real-time monitoring of pond variables 🌡️
